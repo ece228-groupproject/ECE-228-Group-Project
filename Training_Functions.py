@@ -30,15 +30,16 @@ def TrainModel(model, EPOCHS, loss_fn, train_loader, val_loader, optimizer, lr_s
         avg_loss = train_one_epoch(model,train_loader,epoch_number, loss_fn, writer, optimizer,lr_scheduler,scaler)
 
         running_vloss = 0.0
-
+        num_correct = 0
+        num_samples = 0
         #now we eavluate on our validation set to perform early stopping
         model.eval()
         # Disable gradient computation and reduce memory consumption.
         with torch.no_grad():
             for i, vdata in enumerate(val_loader):
                 vinputs, vtargets = vdata
-                vinputs.to(model.device)
-                vtargets.to(model.device)
+                vinputs = vinputs.to(model.device)
+                vtargets = vtargets.to(model.device)
                 #again were using AMP to allow us to train faster
                 with torch.amp.autocast(torch.device(model.device).type):
                     voutputs = model(vinputs)
@@ -91,8 +92,8 @@ def train_one_epoch(model, training_loader, epoch_index, loss_fn, tb_writer, opt
         # Every data instance is an input + label pair
         inputs, targets = data
         #send them to the model's device
-        inputs.to(model.device)
-        targets.to(model.device)
+        inputs = inputs.to(model.device)
+        targets = targets.to(model.device)
 
         # Zero your gradients for every batch!
         optimizer.zero_grad()
