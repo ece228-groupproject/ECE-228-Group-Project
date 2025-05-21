@@ -46,7 +46,8 @@ def TrainModel(model, EPOCHS, loss_fn, train_loader, val_loader, optimizer, lr_s
                     vloss = loss_fn(vtargets,voutputs)
                     running_vloss += vloss
                     _, preds = voutputs.max(1)
-                num_correct += (preds == vtargets).sum()
+                    _, vtarget = vtargets.max(1)
+                num_correct += (preds == vtarget).sum()
                 num_samples += preds.size(0)
         acc = float(num_correct) / num_samples
 
@@ -104,7 +105,7 @@ def train_one_epoch(model, training_loader, epoch_index, loss_fn, tb_writer, opt
             outputs = model(inputs)
             # Compute the loss and its gradients
             loss = loss_fn(targets, outputs)
-            
+        running_loss += loss
         if scaler:#if were scaling our loss
             scaler.scale(loss).backward()
             scaler.step(optimizer)
@@ -119,14 +120,12 @@ def train_one_epoch(model, training_loader, epoch_index, loss_fn, tb_writer, opt
             lr_scheduler.step()
 
         # Gather data and report
-        running_loss += loss
+        
         if i % REPORT_FREQUENCY == REPORT_FREQUENCY-1:
             last_loss = running_loss / i # loss per batch
             print('  batch {} loss: {}'.format(i + 1, last_loss))
             tb_x = epoch_index * len(training_loader) + i + 1
             tb_writer.add_scalar('Loss/train', last_loss, tb_x)
-            
-
     return last_loss
 def TestModel(model, test_loader,loss_fn):
     """
@@ -140,15 +139,16 @@ def TestModel(model, test_loader,loss_fn):
     with torch.no_grad():
         for i, data in enumerate(test_loader):
             inputs, targets = data
-            inputs.to(model.device)
-            targets.to(model.device)
+            inputs = inputs.to(model.device)
+            targets = targets.to(model.device)
             #get scores from the model
             scores = model(inputs)
             loss = loss_fn(targets,scores)
             running_loss += loss
             #get predication based off the maximum score
             _, preds = scores.max(1)
-            num_correct += (preds == targets).sum()
+            _, target = targets.max(1)
+            num_correct += (preds == target).sum()
             num_samples += preds.size(0)
         acc = float(num_correct) / num_samples
         print('Got %d / %d correct (%.2f)' % (num_correct, num_samples, 100 * acc))
