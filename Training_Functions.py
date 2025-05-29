@@ -2,7 +2,7 @@ import torch
 from torch.utils.tensorboard import SummaryWriter
 from datetime import datetime
 
-REPORT_FREQUENCY = 1000
+REPORT_FREQUENCY = 100
 
 def TrainModel(model, EPOCHS, loss_fn, train_loader, val_loader, optimizer, lr_scheduler, scaler = None):
     """

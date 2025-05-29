@@ -12,9 +12,8 @@ class Country_images(Dataset):
         self.labels = pd.read_csv(csv)
         self.root_dir = root_dir
         self.transform = transform#torchvision.transforms.Compose([ResNet152_Weights.IMAGENET1K_V2.transforms()])
-        num_classes = len(country_dict)
-        self.target_transform = Lambda(lambda y: torch.zeros(
-                                        num_classes, dtype=torch.float).scatter_(dim=0, index=torch.tensor(y,dtype=torch.int64), value=1))
+        self.num_classes = len(country_dict)
+        #self.target_transform = Lambda(lambda y: torch.zeros(num_classes, dtype=torch.float).scatter_(dim=0, index=torch.tensor(y,dtype=torch.int64), value=1))
     def __len__(self):
         return(len(self.labels))
 
@@ -27,11 +26,11 @@ class Country_images(Dataset):
         image = self.transform(torchvision.io.decode_image(img_path))
         # save specific image label
         #label = self.labels.iloc[idx, 1:]
-        label = self.target_transform(country_dict[self.labels.iloc[idx, 1]])
+        label = target_transform(country_dict[self.labels.iloc[idx, 1]],self.num_classes)
         #print(label)
         return image, label
 
         
         
-        
-        
+def target_transform(y, num_classes):
+        return torch.zeros(num_classes, dtype=torch.float).scatter_(dim=0, index=torch.tensor(y,dtype=torch.int64), value=1)
