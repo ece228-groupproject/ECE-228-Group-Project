@@ -83,8 +83,8 @@ def train_one_epoch(model, training_loader, epoch_index, loss_fn, tb_writer, opt
     lr_scheduler: the lr_scheduler changes the lr dynamically as needed  
     scaler: scales the loss dues to our use of mixed precision  
     """
-    running_loss = 0.
-    last_loss = 0.
+    running_loss = 0.0
+    last_loss = 0.0
 
     # Here, we use enumerate(training_loader) instead of
     # iter(training_loader) so that we can track the batch
@@ -135,6 +135,9 @@ def TestModel(model, test_loader,loss_fn):
     loss_fn: your chosen loss_function
     """
     model.eval()
+    running_loss = 0.0
+    num_correct = 0
+    num_samples = 0
     # Disable gradient computation and reduce memory consumption.
     with torch.no_grad():
         for i, data in enumerate(test_loader):
