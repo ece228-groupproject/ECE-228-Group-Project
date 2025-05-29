@@ -124,9 +124,10 @@ while True:
 
     lat = result['location']['lat']
     lon = result['location']['lon']
+
     round_num+=1
     long_conv = interp1d([long_low,long_up],[-327,327])
-    lat_conv = interp1d([lat_up,lat_low],[-200,200])
+    # lat_conv = interp1d([lat_up,lat_low],[-200,200])
     x = long_conv(lon)
     y = lat_to_mercator_y(lat, lat_up, lat_low, 400)
 
