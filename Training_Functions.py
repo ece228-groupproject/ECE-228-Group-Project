@@ -41,12 +41,12 @@ def TrainModel(model, EPOCHS, loss_fn, train_loader, val_loader, optimizer, lr_s
                 vinputs = vinputs.to(model.device)
                 vtargets = vtargets.to(model.device)
                 #again were using AMP to allow us to train faster
-                with torch.amp.autocast(torch.device(model.device).type):
-                    voutputs = model(vinputs)
-                    vloss = loss_fn(vtargets,voutputs)
-                    running_vloss += vloss
-                    _, preds = voutputs.max(1)
-                    _, vtarget = vtargets.max(1)
+                #with torch.amp.autocast(torch.device(model.device).type):
+                voutputs = model(vinputs)
+                vloss = loss_fn(voutputs,vtargets)
+                running_vloss += vloss
+                _, preds = voutputs.max(1)
+                _, vtarget = vtargets.max(1)
                 num_correct += (preds == vtarget).sum()
                 num_samples += preds.size(0)
         acc = float(num_correct) / num_samples
@@ -100,11 +100,11 @@ def train_one_epoch(model, training_loader, epoch_index, loss_fn, tb_writer, opt
         optimizer.zero_grad()
 
         #use automatic mixed precision to reduce memory consumption and allow us to run on more limited resources
-        with torch.amp.autocast(torch.device(model.device).type):
+        #with torch.amp.autocast(torch.device(model.device).type):
             # Make predictions for this batch
-            outputs = model(inputs)
+        outputs = model(inputs)
             # Compute the loss and its gradients
-            loss = loss_fn(targets, outputs)
+        loss = loss_fn(outputs,targets)
         running_loss += loss
         if scaler:#if were scaling our loss
             scaler.scale(loss).backward()
@@ -146,7 +146,7 @@ def TestModel(model, test_loader,loss_fn):
             targets = targets.to(model.device)
             #get scores from the model
             scores = model(inputs)
-            loss = loss_fn(targets,scores)
+            loss = loss_fn(scores,targets)
             running_loss += loss
             #get predication based off the maximum score
             _, preds = scores.max(1)
