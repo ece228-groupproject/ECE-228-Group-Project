@@ -21,7 +21,7 @@ class Country_images(Dataset):
         if torch.is_tensor(idx):
             idx = idx.tolist()
         # isolating single image
-        img_path = os.path.join(self.root_dir,self.labels.iloc[idx, 1]+"\\"+ self.labels.iloc[idx, 0])
+        img_path = os.path.join(self.root_dir,self.labels.iloc[idx, 1],self.labels.iloc[idx, 0])
         #print(img_path)
         image = self.transform(torchvision.io.decode_image(img_path))
         # save specific image label
