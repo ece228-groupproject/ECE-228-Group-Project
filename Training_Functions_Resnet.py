@@ -167,7 +167,15 @@ def unfreeze_expand(model, optimizer, epoch, start_at_epoch, interval, layer2):
 
     # filter out layers that do NOT require gradient (requires_grad still = False)
     grad_params = filter(lambda p: p.requires_grad, model.parameters())
-    optimizer = torch.optim.Adam(grad_params, lr=lr, weight_decay = weight_decay)
+    # get dict of parameters requiring gradient
+    grad_params_list = list(grad_params)
+    grad_params_dict = {
+                        'params': grad_params_list,
+                        'lr': lr,
+                        'weight_decay': weight_decay
+                        }
+
+    optimizer.add_param_group(grad_params_dict)
 
 # -----------------------------#
 
