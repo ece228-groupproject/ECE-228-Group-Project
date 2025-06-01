@@ -1,3 +1,4 @@
 /data/*
 **/.DS_Store
 /Trained_Models/*
+.ipynb_checkpoints
