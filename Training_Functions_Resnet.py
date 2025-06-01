@@ -160,7 +160,7 @@ def unfreeze_expand(model, optimizer, epoch, start_at_epoch, interval, layer2):
         for param in model.layer3.parameters():
             param.requires_grad = True
     if layer2:
-        if epoch >= start_at_epoch + interval*2
+        if epoch >= start_at_epoch + interval*2:
             for param in model.layer2.parameters():
                 param.requires_grad = True
 
