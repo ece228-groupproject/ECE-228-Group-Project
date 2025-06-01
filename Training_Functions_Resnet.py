@@ -1,6 +1,7 @@
 # %% [code]
 import torch
 from torch.utils.tensorboard import SummaryWriter
+import torch.optim as optim
 from datetime import datetime
 
 REPORT_FREQUENCY = 100
