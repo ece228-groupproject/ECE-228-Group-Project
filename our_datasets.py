@@ -2,6 +2,7 @@ from torch.utils.data import Dataset
 import torch, torchvision
 import os
 import pandas as pd
+from PIL import Image
 #from Country_dict import comp_country_dict
 from torchvision.transforms.v2 import Lambda
 class Country_images(Dataset):
@@ -24,7 +25,8 @@ class Country_images(Dataset):
         # isolating single image
         img_path = os.path.join(os.path.join(self.root_dir,self.labels.iloc[idx, 1]),self.labels.iloc[idx, 0])
         #print(img_path)
-        image = self.transform(torchvision.io.decode_image(img_path))
+        image = self.transform(torchvision.io.read_image(img_path))
+        #image = self.transform(Image.open(img_path).convert("RGB"))
         # save specific image label
         #label = self.labels.iloc[idx, 1:]
         label = self.target_transform(self.country_dict[self.labels.iloc[idx, 1]])

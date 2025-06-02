@@ -2,3 +2,5 @@
 **/.DS_Store
 /Trained_Models/*
 .ipynb_checkpoints
+/ece228wb_venv/*
+/ece228venv/*
