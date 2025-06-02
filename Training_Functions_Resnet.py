@@ -170,11 +170,15 @@ def unfreeze_expand(model, optimizer, epoch, start_at_epoch, interval, layer2):
     
     # get dict of parameters requiring gradient
     grad_params_list = list(grad_params)
-    grad_params_set = set(grad_params_list)
+    grad_params_dict = {
+                        'params': grad_params_list,
+                        'lr': lr,
+                        'weight_decay': weight_decay
+                        }
 
     # need to update to check for preexisting parameters in the optimizer, and only add the new ones
-    params_set = set([p for p in optimizer.param_groups])
-    added_params = params_list.union(grad_params_set)
+    params_dict = optimizer.param_groups
+    added_params = params_dict.union(grad_params_dict)
 
     added_params_list = list(added_params)
     added_params_dict = {
