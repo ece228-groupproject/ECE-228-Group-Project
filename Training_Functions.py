@@ -41,9 +41,9 @@ def TrainModel(model, EPOCHS, loss_fn, train_loader, val_loader, optimizer, lr_s
                 vinputs = vinputs.to(model.device)
                 vtargets = vtargets.to(model.device)
                 #again were using AMP to allow us to train faster
-                #with torch.amp.autocast(torch.device(model.device).type):
-                voutputs = model(vinputs)
-                vloss = loss_fn(voutputs,vtargets)
+                with torch.amp.autocast(torch.device(model.device).type):
+                    voutputs = model(vinputs)
+                    vloss = loss_fn(voutputs,vtargets)
                 running_vloss += vloss
                 _, preds = voutputs.max(1)
                 _, vtarget = vtargets.max(1)
@@ -66,7 +66,7 @@ def TrainModel(model, EPOCHS, loss_fn, train_loader, val_loader, optimizer, lr_s
         #AKA early stopping, a form of regularization we talked about it class
         if acc > best_acc:
             best_acc = acc
-            torch.save(model.state_dict(), "{}{}-Best".format(model.path,model.name))
+            torch.save(model.state_dict(), "{}{}-Best.pth".format(model.path,model.name))
 
         epoch_number += 1
 
@@ -100,11 +100,11 @@ def train_one_epoch(model, training_loader, epoch_index, loss_fn, tb_writer, opt
         optimizer.zero_grad()
 
         #use automatic mixed precision to reduce memory consumption and allow us to run on more limited resources
-        #with torch.amp.autocast(torch.device(model.device).type):
+        with torch.amp.autocast(torch.device(model.device).type):
             # Make predictions for this batch
-        outputs = model(inputs)
+            outputs = model(inputs)
             # Compute the loss and its gradients
-        loss = loss_fn(outputs,targets)
+            loss = loss_fn(outputs,targets)
         running_loss += loss
         if scaler:#if were scaling our loss
             scaler.scale(loss).backward()
