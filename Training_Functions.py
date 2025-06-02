@@ -4,7 +4,7 @@ from datetime import datetime
 
 REPORT_FREQUENCY = 100
 
-def TrainModel(model, EPOCHS, loss_fn, train_loader, val_loader, optimizer, lr_scheduler, scaler = None):
+def TrainModel(model, EPOCHS, loss_fn, train_loader, val_loader, optimizer, lr_scheduler,use_amp = False, scaler = None):
     """
     This function will train your model and save the one that perfroms the best of validation data
     model: the model you wish to test
@@ -27,7 +27,7 @@ def TrainModel(model, EPOCHS, loss_fn, train_loader, val_loader, optimizer, lr_s
 
         # Make sure gradient tracking is on, and do a pass over the data
         model.train(True)
-        avg_loss = train_one_epoch(model,train_loader,epoch_number, loss_fn, writer, optimizer,lr_scheduler,scaler)
+        avg_loss = train_one_epoch(model,train_loader,epoch_number, loss_fn, writer, optimizer,lr_scheduler,use_amp,scaler)
 
         running_vloss = 0.0
         num_correct = 0
@@ -41,7 +41,11 @@ def TrainModel(model, EPOCHS, loss_fn, train_loader, val_loader, optimizer, lr_s
                 vinputs = vinputs.to(model.device)
                 vtargets = vtargets.to(model.device)
                 #again were using AMP to allow us to train faster
-                with torch.amp.autocast(torch.device(model.device).type):
+                if(use_amp):
+                    with torch.amp.autocast(torch.device(model.device).type):
+                        voutputs = model(vinputs)
+                        vloss = loss_fn(voutputs,vtargets)
+                else:
                     voutputs = model(vinputs)
                     vloss = loss_fn(voutputs,vtargets)
                 running_vloss += vloss
@@ -71,7 +75,7 @@ def TrainModel(model, EPOCHS, loss_fn, train_loader, val_loader, optimizer, lr_s
         epoch_number += 1
 
 
-def train_one_epoch(model, training_loader, epoch_index, loss_fn, tb_writer, optimizer, lr_scheduler, scaler= None):
+def train_one_epoch(model, training_loader, epoch_index, loss_fn, tb_writer, optimizer, lr_scheduler, use_amp=False, scaler= None):
     """
     This function will train your model and save the one that perfroms the best of validation data  
     model: the model you wish to test  
@@ -100,7 +104,13 @@ def train_one_epoch(model, training_loader, epoch_index, loss_fn, tb_writer, opt
         optimizer.zero_grad()
 
         #use automatic mixed precision to reduce memory consumption and allow us to run on more limited resources
-        with torch.amp.autocast(torch.device(model.device).type):
+        if(use_amp):
+            with torch.amp.autocast(torch.device(model.device).type):
+                # Make predictions for this batch
+                outputs = model(inputs)
+                # Compute the loss and its gradients
+                loss = loss_fn(outputs,targets)
+        else:
             # Make predictions for this batch
             outputs = model(inputs)
             # Compute the loss and its gradients
