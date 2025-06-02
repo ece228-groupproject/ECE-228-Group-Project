@@ -175,9 +175,11 @@ def unfreeze_expand(model, optimizer, epoch, start_at_epoch, interval, layer2):
                         'lr': lr,
                         'weight_decay': weight_decay
                         }
+    print(type(grad_params_dict))
 
     # need to update to check for preexisting parameters in the optimizer, and only add the new ones
     params_dict = optimizer.param_groups
+    print(type(params_dict))
     added_params = params_dict | grad_params_dict
 
     added_params_list = list(added_params)
