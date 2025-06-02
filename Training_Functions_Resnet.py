@@ -116,7 +116,7 @@ def train_one_epoch(model, training_loader, epoch_index, loss_fn, tb_writer, opt
             # Compute the loss and its gradients
 
         # resize targets to work with crossEntropyloss
-        targets = targets.argmax(dim=1)
+        # targets = targets.argmax(dim=1)
         
         loss = loss_fn(outputs,targets)
         running_loss += loss
@@ -167,15 +167,24 @@ def unfreeze_expand(model, optimizer, epoch, start_at_epoch, interval, layer2):
 
     # filter out layers that do NOT require gradient (requires_grad still = False)
     grad_params = filter(lambda p: p.requires_grad, model.parameters())
+    
     # get dict of parameters requiring gradient
     grad_params_list = list(grad_params)
-    grad_params_dict = {
-                        'params': grad_params_list,
-                        'lr': lr,
-                        'weight_decay': weight_decay
-                        }
+    grad_params_set = set(grad_params_list)
 
-    optimizer.add_param_group(grad_params_dict)
+    # need to update to check for preexisting prmeters in the optimizer, nd only dd the new ones
+    # lso optimizer initilization and lr scheduler considerations
+    params_set = set([p for p in optimizer.param_groups])
+    added_params = params_list.union(grad_params_set)
+
+    added_params_list = list(added_params)
+    added_params_dict = {
+                        'params': added_params_list
+                        'lr': lr
+                        'weight_decay': weight_decay
+    }
+
+    optimizer.add_param_group(added_params_dict)
 
 # -----------------------------#
 
