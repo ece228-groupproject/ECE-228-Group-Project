@@ -172,17 +172,16 @@ def unfreeze_expand(model, optimizer, epoch, start_at_epoch, interval, layer2):
     grad_params_list = list(grad_params)
     grad_params_set = set(grad_params_list)
 
-    # need to update to check for preexisting prmeters in the optimizer, nd only dd the new ones
-    # lso optimizer initilization and lr scheduler considerations
+    # need to update to check for preexisting parameters in the optimizer, and only add the new ones
     params_set = set([p for p in optimizer.param_groups])
     added_params = params_list.union(grad_params_set)
 
     added_params_list = list(added_params)
     added_params_dict = {
-                        'params': added_params_list
-                        'lr': lr
+                        'params': added_params_list,
+                        'lr': lr,
                         'weight_decay': weight_decay
-    }
+                        }
 
     optimizer.add_param_group(added_params_dict)
 
