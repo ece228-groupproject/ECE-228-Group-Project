@@ -177,7 +177,7 @@ def unfreeze_expand(model, optimizer, epoch, start_at_epoch, interval, layer2):
     if new_params:
         new_param_group = {
             'params': new_params,
-            'lr': lr # * 0.1, lower learning rate for new layers
+            'lr': lr, # * 0.1, lower learning rate for new layers
             'weight_decay': weight_decay,
         }
         optimizer.add_param_group(new_param_group)
