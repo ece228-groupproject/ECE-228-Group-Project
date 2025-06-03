@@ -1,0 +1,100 @@
+- &id001
+  location:
+    lat: 51.5074
+    lon: -0.1278
+  meta:
+    round: 89
+    status: processed
+- *id001
+- &id004
+  location:
+    lat: 48.8566
+    lon: 2.3522
+  meta:
+    round: 96
+    status: processed
+- &id002
+  location:
+    lat: -35.2809
+    lon: 149.13
+  meta:
+    round: 100
+    status: processed
+- &id006
+  location:
+    lat: 40.7128
+    lon: -74.006
+  meta:
+    round: 91
+    status: processed
+- *id002
+- &id003
+  location:
+    lat: 39.9042
+    lon: 116.4074
+  meta:
+    round: 93
+    status: processed
+- *id002
+- *id002
+- *id003
+- *id004
+- &id005
+  location:
+    lat: -15.7939
+    lon: -47.8828
+  meta:
+    round: 98
+    status: processed
+- *id003
+- *id005
+- *id001
+- *id006
+- *id001
+- *id003
+- *id004
+- *id005
+- *id001
+- *id004
+- *id006
+- &id007
+  location:
+    lat: -25.7479
+    lon: 28.2293
+  meta:
+    round: 83
+    status: processed
+- *id001
+- *id005
+- *id005
+- *id002
+- *id001
+- *id006
+- *id005
+- *id007
+- *id003
+- *id004
+- *id001
+- *id005
+- *id004
+- *id006
+- *id004
+- *id007
+- *id003
+- *id007
+- *id005
+- *id001
+- *id006
+- *id004
+- *id005
+- *id001
+- *id001
+- *id007
+- *id004
+- *id005
+- *id004
+- *id004
+- *id004
+- *id006
+- *id001
+- *id002

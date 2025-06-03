@@ -2,6 +2,7 @@ import yaml
 from pathlib import Path
 import shutil
 import time
+import random
 
 rounds = [
     {
@@ -75,6 +76,14 @@ rounds = [
         }
     }
 ]
+# rand_rounds = []
+# for i in range(1,101):
+#     round = random.choice(rounds)
+#     round['meta']['round'] = int(i)
+#     print(i)
+#     rand_rounds.append(round)
+
+    
 
 # Loop through each round and wait for user to proceed
 collected_data = []

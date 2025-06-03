@@ -1,0 +1,28 @@
+- &id001
+  location:
+    lat: 51.5074
+    lon: -0.1278
+  meta:
+    round: 89
+    status: processed
+- *id001
+- location:
+    lat: 48.8566
+    lon: 2.3522
+  meta:
+    round: 96
+    status: processed
+- &id002
+  location:
+    lat: -35.2809
+    lon: 149.13
+  meta:
+    round: 100
+    status: processed
+- location:
+    lat: 40.7128
+    lon: -74.006
+  meta:
+    round: 91
+    status: processed
+- *id002
