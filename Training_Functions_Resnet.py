@@ -168,6 +168,25 @@ def unfreeze_expand(model, optimizer, epoch, start_at_epoch, interval, layer2):
     # filter out layers that do NOT require gradient (requires_grad still = False)
     grad_params = filter(lambda p: p.requires_grad, model.parameters())
     
+    existing_params = set(p for group in optimizer.param_groups for p in group['params'])
+    
+    # Filter out already existing parameters and only add the new ones
+    new_params = [p for p in grad_params if p not in existing_params]
+    
+    # Only add new parameters if they're not already in the optimizer
+    if new_params:
+        new_param_group = {
+            'params': new_params,
+            'lr': lr # * 0.1, lower learning rate for new layers
+            'weight_decay': weight_decay,
+        }
+        optimizer.add_param_group(new_param_group)
+
+
+
+# -------------------------------_#
+
+    '''
     # get dict of parameters requiring gradient
     grad_params_list = list(grad_params)
     grad_params_dict = {
@@ -190,6 +209,7 @@ def unfreeze_expand(model, optimizer, epoch, start_at_epoch, interval, layer2):
                         }
 
     optimizer.add_param_group(added_params_dict)
+    '''
 
 # -----------------------------#
 
