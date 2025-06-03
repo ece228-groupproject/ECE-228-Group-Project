@@ -1,0 +1,18 @@
+- location:
+    lat: 51.5074
+    lon: -0.1278
+  meta:
+    round: 1
+    status: processed
+- location:
+    lat: 40.7128
+    lon: -74.006
+  meta:
+    round: 2
+    status: processed
+- location:
+    lat: 48.8566
+    lon: 2.3522
+  meta:
+    round: 3
+    status: processed

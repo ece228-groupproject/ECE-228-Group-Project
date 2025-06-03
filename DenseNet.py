@@ -39,6 +39,8 @@ class TransLayer(nn.Module):
         x1 = self.relu(self.norm(x))
         x2 = self.conv(x1)
         return self.avg_pool(x2)
+    
+
 class DenseNet(nn.Module):
     def __init__(self, growth_rate, depth, reduction, num_classes, bottleneck):
         super(DenseNet,self).__init__()
@@ -76,7 +78,7 @@ class DenseNet(nn.Module):
         self.relu = nn.LeakyReLU()
         self.avg_pool = nn.AvgPool2d(8)
         self.log_softmax = nn.LogSoftmax()
-        self.flatten = torch.flatten()
+        #self.flatten = torch.flatten()
         #intialize wieghts
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
@@ -103,7 +105,7 @@ class DenseNet(nn.Module):
         x9 = self.avg_pool(self.relu(self.norm(x8)))
         
         #return self.log_softmax(self.fc(self.flatten(x7)))
-        return self.fc(self.flatten(x9))
+        return self.fc(torch.flatten(x9,1,-1))
 
     #function that makes an nn.Sequential base on the parameters I give it
     def _make_dense(self, num_channels, growth_rate, num_dense_blocks, bottleneck):
