@@ -13,7 +13,7 @@ class Country_images(Dataset):
         self.labels = pd.read_csv(csv)
         self.root_dir = root_dir
         self.transform = transform#torchvision.transforms.Compose([ResNet152_Weights.IMAGENET1K_V2.transforms()])
-        self.country_dict = {item: index for index, item in enumerate(self.labels["country"].unique())}
+        self.country_dict = {index: item for index, item in enumerate(self.labels["country"].unique())}
         self.num_classes = self.get_num_classes()
         #self.target_transform = Lambda(lambda y: torch.zeros(num_classes, dtype=torch.float).scatter_(dim=0, index=torch.tensor(y,dtype=torch.int64), value=1))
     def __len__(self):

@@ -1,8 +1,6 @@
-- &id001
-  location:
-    lat: 51.5074
-    lon: -0.1278
-  meta:
-    round: 89
-    status: processed
-- *id001
+location:
+  lat: 39
+  lon: -77
+meta:
+  round: 2
+  status: processed

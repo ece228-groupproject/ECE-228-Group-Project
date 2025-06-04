@@ -14,9 +14,9 @@ from selenium.webdriver.common.action_chains import ActionChains
 
 import torch
 import torchvision as tv
+
 import torchvision.transforms.v2 as v2
-from model import country_coord
-from model.our_datasets import Country_images
+import country_coord, our_datasets
 
 from scipy.interpolate import interp1d
 from math import log, tan, pi, radians
@@ -35,12 +35,15 @@ weights = tv.models.DenseNet201_Weights.DEFAULT
 transform = v2.Compose([weights.transforms(), ])
 
 dataset_path = "../data/compressed_dataset"
-d = Country_images("web_browser/model/dataset/country.csv",dataset_path,transform=transform)
+d = our_datasets.Country_images("model/dataset/country.csv",dataset_path,transform=transform)
 num_classes = d.get_num_classes()
 model = tv.models.densenet201(num_classes=num_classes)
+model.device = device
+model.name = "DenseNet-201-3"
+model.path = os.path.join("model") #where to save our best model
+
 checkpoint = torch.load(os.path.join( model.path,model.name+"-Best.pth"),map_location=torch.device(device))
 model.load_state_dict(checkpoint)
-
 
 model = model.to(device)
 
@@ -54,12 +57,16 @@ CYAN    = "\033[96m"
 BOLD    = "\033[1m"
 RESET   = "\033[0m"
 
-def ai_player(model, img_path, round_nu):    
-    img = d.transform(torchvision.io.read_image(img_path))
+def ai_player(model, img_path, round_num):    
+    print(img_path)
+    img = d.transform(tv.io.read_image(img_path))
+    img = img.unsqueeze(0)
     pred = model(img)    
-    pred = country_coord.ctry2coord(d.country_dict, pred) #lat, long
+    print(d.country_dict)
+    print(pred.argmax(dim=1).item())
+    pred = country_coord.ctry2coord(d.country_dict, pred.argmax(dim=1).item(), centroid=False) #lat, long
     
-    output = {
+    output ={
         'meta': {
             'round': round_num,
             'status': 'processed'
@@ -68,7 +75,8 @@ def ai_player(model, img_path, round_nu):
             'lat': pred[0],
             'lon': pred[1]
         }
-    },
+    }
+    
     output_path = Path(f"./processed/round_{round_num:02}_output.yaml")
     output_path.parent.mkdir(parents=True, exist_ok=True)
     
@@ -78,7 +86,7 @@ def ai_player(model, img_path, round_nu):
     
     print(f"Round {output['meta']['round']} written to {output_path}")
     
-    return pred
+    return output
 
 def wait_for_output(output_path: Path, round_num: int, timeout: float = 60.0):
     start_time = time.time()

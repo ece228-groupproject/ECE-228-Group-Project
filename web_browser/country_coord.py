@@ -1,6 +1,6 @@
 import requests
 import json
-from model.our_datasets import Country_images
+
 import csv
 # country --> iso --> capital --> coord
 # ctry2coord(country_dict, model_output, centroid)
@@ -109,6 +109,7 @@ def ctry2coord(ctry_dict, m_output, centroid):
             print(f"Capital of {ctry}: {capital}: {coord}")
             # round coord to integers
             coord = (round(float(coord[0])), round(float(coord[1])))
+            print(type(coord))
             return coord
             
 # main function shoudl ahve boolean parameter to choose capital or centroid coordinates
