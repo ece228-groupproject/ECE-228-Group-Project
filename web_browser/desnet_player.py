@@ -1,16 +1,3 @@
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-import time
-import os
-from PIL import Image
-from pathlib import Path
-import yaml 
-import time
-import undetected_chromedriver as uc
-from selenium.webdriver.common.action_chains import ActionChains
 
 import torch
 import torchvision as tv
@@ -18,8 +5,28 @@ import torchvision as tv
 import torchvision.transforms.v2 as v2
 import country_coord, our_datasets
 
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import time
+import os
+import shutil
+from PIL import Image
+from pathlib import Path
+import yaml 
+import time
+import undetected_chromedriver as uc
+from selenium.webdriver.common.action_chains import ActionChains
+
 from scipy.interpolate import interp1d
 from math import log, tan, pi, radians
+
+import re
+import csv
+
+import country_coord
 
 
 USE_GPU = True
@@ -34,7 +41,9 @@ batch_size = 16
 weights = tv.models.DenseNet201_Weights.DEFAULT
 transform = v2.Compose([weights.transforms(), ])
 
-dataset_path = "../data/compressed_dataset"
+output_round_data = "results/output_csv_round_data.csv"
+    
+dataset_path = "../data/compressed_dataset" #not used but required input for our dataset class
 d = our_datasets.Country_images("model/dataset/country.csv",dataset_path,transform=transform)
 num_classes = d.get_num_classes()
 model = tv.models.densenet201(num_classes=num_classes)
@@ -47,6 +56,10 @@ model.load_state_dict(checkpoint)
 
 model = model.to(device)
 
+results = []
+if os.path.exists(output_round_data):
+    shutil.rmtree(output_round_data)
+os.makedirs(output_round_data, exist_ok=True)
 
 RED     = "\033[91m"
 GREEN   = "\033[92m"
@@ -56,14 +69,63 @@ MAGENTA = "\033[95m"
 CYAN    = "\033[96m"
 BOLD    = "\033[1m"
 RESET   = "\033[0m"
-
+    
+def save_results(csv_file, img_path, round_num, in_lat, in_lon, truth):
+    #Write header if file is empty
+    if os.path.getsize(csv_file) == 0:
+        with open(csv_file, 'w', newline='') as file:
+            write_header = csv.writer(file)
+            write_header.writerow(['round','image_path','truth_country','truth_lat','truth_long',"{model.name}_country","{model.name}_lat","{model_name}_long"])
+            
+    #get country from coord
+    country = country_coord.getCountry_fromCoord([in_lat, in_lon])
+    truth_country = country_coord.getCountry_fromCoord([truth[0], truth[1]])
+    #append data in csv file
+    with open(csv_file, 'a', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow([round_num, img_path, truth_country, truth[0], truth[1], country, in_lat, in_lon ])
+    print(f"Results saved to {csv_file}")
+def get_coord_truth(driver):
+    try:
+        element = driver.find_element(By.ID, "PanoramaIframe")
+        match=re.search(r"location=(?P<latitude>\d+),(?P<longitude>\d+)",element.get_attribute("source"))
+        if match:
+            latitude = match.group("lat")
+            longitude = match.group("long")
+            print(f"Ground Truth - Latitude: {latitude}, Longitude: {longitude}")
+            return latitude, longitude
+    except:
+        return None
+def process_results(driver, results):
+    dist_list = []
+    for result in results:
+        match = re.search(r'([\d,\.]+)\s*(km|m)',result)
+        if match:
+            dist, unit = match.groups()
+            dist = float(dist.replace(',',''))
+            if unit == 'km':
+                dist *= 1000
+            dist_list.append(dist)
+        else:
+            print("None in process_results")
+            return None
+    print(f"truth: {get_coord_truth(driver)}")
+    return dist_list
+def get_dist_text(driver):
+    try:
+        element = driver.find_element(By.ID, "distanceText")
+        print(f"Distance away from target: {element.text}")
+        return element.text
+    except:
+        return None
+    
 def ai_player(model, img_path, round_num):    
-    print(img_path)
+    #print(img_path)
     img = d.transform(tv.io.read_image(img_path))
     img = img.unsqueeze(0)
     pred = model(img)    
-    print(d.country_dict)
-    print(pred.argmax(dim=1).item())
+    #print(d.country_dict)
+    #print(pred.argmax(dim=1).item())
     pred = country_coord.ctry2coord(d.country_dict, pred.argmax(dim=1).item(), centroid=False) #lat, long
     
     output ={
@@ -204,9 +266,9 @@ image_path.parent.mkdir(parents=True, exist_ok=True)
 
 
 print(f"{GREEN}\n\n========================\nGAME BEGIN\n========================{RESET}")
-
+         
 # Run for multiple rounds
-for round_num in range(1, 101):  # or while True
+for round_num in range(1, 2):  # or while True
 
     print('\n\n' + '=' * 10 + f' ROUND {round_num} START ' + '=' * 10 + '\n\n')
 
@@ -236,6 +298,9 @@ for round_num in range(1, 101):  # or while True
 
     lat = result['location']['lat']
     lon = result['location']['lon']
+    
+    save_results(output_round_data, image_path, round_num, lat, lon, get_coord_truth(driver))  # Save results to CSV
+    
     round_num+=1
     long_conv = interp1d([long_low,long_up],[-327,327])
     lat_conv = interp1d([lat_up,lat_low],[-200,200])
@@ -263,13 +328,20 @@ for round_num in range(1, 101):  # or while True
     )
     ActionChains(driver).move_to_element(confirm_btn).click().perform()
 
+    
+    
     continue_btn = WebDriverWait(driver, 10).until(
         EC.element_to_be_clickable((By.ID, "nextRound"))
     )
     
     countdown(10)
+    results.append(get_dist_text(driver))
     continue_btn.click()
     print("Clicked Continue button.")
 
     print("Done with round", round_num)
     time.sleep(2)  # Wait until next round loads
+    
+print(f"avg error of {sum(process_results(driver,results))/len(results)} meters")
+if os.path.exists('./processed'):
+    shutil.rmtree('.processed')
