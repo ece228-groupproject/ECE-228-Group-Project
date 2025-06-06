@@ -1,6 +1,7 @@
 import torch
 from torch.utils.tensorboard import SummaryWriter
 from datetime import datetime
+import os
 
 REPORT_FREQUENCY = 100
 
@@ -17,7 +18,7 @@ def TrainModel(model, EPOCHS, loss_fn, train_loader, val_loader, optimizer, lr_s
     scaler: scales the loss dues to our use of mixed precision
     """
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    writer = SummaryWriter('{}runs/{}_{}'.format(model.path,model.name,timestamp))#used for tracking our model during training
+    writer = SummaryWriter(os.path.join(os.path.join(model.path,'runs'),'{}_{}'.format(model.name,timestamp)))#used for tracking our model during training
     epoch_number = 0
 
     best_acc = 0.
@@ -70,7 +71,7 @@ def TrainModel(model, EPOCHS, loss_fn, train_loader, val_loader, optimizer, lr_s
         #AKA early stopping, a form of regularization we talked about it class
         if acc > best_acc:
             best_acc = acc
-            torch.save(model.state_dict(), "{}{}-Best.pth".format(model.path,model.name))
+            torch.save(model.state_dict(), os.path.join(model.path,"{}-Best.pth".format(model.name)))
 
         epoch_number += 1
 
