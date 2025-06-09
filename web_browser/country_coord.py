@@ -9,7 +9,7 @@ import csv
 # Get country from lat and lon coordinates
 def getCountry_fromCoord(coord):
     geolocator = Nominatim(user_agent="my_geopy_app")
-    location = geolocator.reverse(coord[0]+","+coord[1])
+    location = geolocator.reverse(str(coord[0])+","+str(coord[1]))
     return location.raw["address"].get("country","")
     
 # -----------------------#
