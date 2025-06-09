@@ -32,6 +32,9 @@ The provided code notebooks...
 ```bash
 git clone 
 cd ECE-228-Group-Project
+
+Mac/Linux: source ece228venv/bin/activate | Windows: ece228venv\Scripts\activate
+
 pip install -r requirements.txt
 ```
 
@@ -51,6 +54,7 @@ model/Trained_Models
 │   ├── [ResNet-152-Best-1.pth]
 │   ├── [DenseNet-201-Full-2-Best.pth]
 │   ├── [DenseNet-201-3-Best.pth]
+│   ├── [VGG-19BN-1-Best.pth]
 │   ├── readme.md
 │   └── runs
 └── ViT
@@ -116,10 +120,17 @@ model/Trained_Models
 
 ## Usage
 
+Run mock demo with OpenGuesser with pre-written input file and without model
+Output:
+- web_browser/screenshots
+```bash
+python web_browser/player.py
+```
+
 Run model with OpenGuesser
 Output:
 - web_browser/results/output_csv_round_data.csv
 - web_browser/screenshots
 ```bash
-python web_browser/desnet_plasyer.py
+python desnet_player.py
 ```

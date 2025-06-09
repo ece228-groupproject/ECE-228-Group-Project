@@ -3,7 +3,8 @@ import torch
 import torchvision as tv
 
 import torchvision.transforms.v2 as v2
-import country_coord, our_datasets
+import country_coord
+import model.our_datasets as our_datasets
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -44,13 +45,13 @@ transform = v2.Compose([weights.transforms(), ])
 output_folder = "results/"
 output_round_data = output_folder+"output_csv_round_data.csv"
     
-dataset_path = "../data/compressed_dataset" #not used but required input for our dataset class
-d = our_datasets.Country_images("model/dataset/country.csv",dataset_path,transform=transform)
+dataset_path = "data/compressed_dataset" #not used but required input for our dataset class
+d = our_datasets.Country_images("data/Data_Generation/country.csv",dataset_path,transform=transform)
 num_classes = d.get_num_classes()
 model = tv.models.densenet201(num_classes=num_classes)
 model.device = device
-model.name = "DenseNet-201-3"
-model.path = os.path.join("model") #where to save our best model
+model.name = "DenseNet-201-3" #CHaNGE THIS TO MODEL YOU WaNT TO USE
+model.path = os.path.join("model","Trained_Models","CNN") ##CHaNGE 3rd argument based on above model CNN/ViT
 
 checkpoint = torch.load(os.path.join( model.path,model.name+"-Best.pth"),map_location=torch.device(device))
 model.load_state_dict(checkpoint)
@@ -71,12 +72,12 @@ CYAN    = "\033[96m"
 BOLD    = "\033[1m"
 RESET   = "\033[0m"
     
-def save_results(csv_file, img_path, round_num, in_lat, in_lon, truth):
+def save_results(driver,csv_file, img_path, round_num, in_lat, in_lon, truth):
     #Write header if file is empty
     if not os.path.exists(csv_file):
         with open(csv_file, 'w', newline='') as file:
             write_header = csv.writer(file)
-            write_header.writerow(['round','image_path','truth_country','truth_lat','truth_long',f"{model.name}_country",f"{model.name}_lat",f"{model.name}_long"])
+            write_header.writerow(['round','image_path','truth_country','truth_lat','truth_long',f"{model.name}_country",f"{model.name}_lat",f"{model.name}_long", f"{model.name}_distance"])
             
     #get country from coord
     country = country_coord.getCountry_fromCoord([in_lat, in_lon])
@@ -84,7 +85,7 @@ def save_results(csv_file, img_path, round_num, in_lat, in_lon, truth):
     #append data in csv file
     with open(csv_file, 'a', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow([round_num, img_path, truth_country, truth[0], truth[1], country, in_lat, in_lon ])
+        writer.writerow([round_num, img_path, truth_country, truth[0], truth[1], country, in_lat, in_lon,get_dist_text(driver)])
     print(f"Results saved to {csv_file}")
 def get_coord_truth(driver):
     try:
@@ -142,7 +143,7 @@ def ai_player(model, img_path, round_num):
         }
     }
     
-    output_path = Path(f"./processed/round_{round_num:02}_output.yaml")
+    output_path = Path(f"results/processed/round_{round_num:03}_output.yaml")
     output_path.parent.mkdir(parents=True, exist_ok=True)
     
     # Dump only current collected rounds
@@ -216,7 +217,7 @@ def toggle_elements(driver, selectors=None, ids=None, inside_iframe=False, ifram
         driver.switch_to.default_content()
 
 def capture_map_screenshot(driver, round_num=1):
-    path = f"./screenshots/round_{round_num:03d}.png"
+    path = f"results/screenshots/round_{round_num:03d}.png"
     driver.save_screenshot(path)
     print(f"Screenshot saved to: {path}")
     return path
@@ -233,7 +234,7 @@ def countdown(t_length):
         time.sleep(1)
     print("\rTime till next round: 0   ")
 
-service = Service(executable_path="./chromedriver")
+service = Service(executable_path="web_browser/chromedriver")
 driver = webdriver.Chrome(service=service)
 driver.get("https://openguessr.com/")
 wait = WebDriverWait(driver, 15)
@@ -263,7 +264,7 @@ lat_low = -75.299304
 long_up = 179.235395
 
 round_num = 1
-image_path = Path(f"./screenshots/round_{round_num:02}.png")
+image_path = Path(f"results/screenshots/round_{round_num:03}.png")
 
 image_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -294,7 +295,7 @@ for round_num in range(1, 101):  # or while True
     print(f"{YELLOW}Image capture done...{RESET}")
 
     ###################### GAMEPLAY ######################
-    output_path = Path(f"./processed/round_{round_num:02}_output.yaml")
+    output_path = Path(f"results/processed/round_{round_num:03}_output.yaml")
     result = ai_player(model=model, img_path=image_path, round_num=round_num)
     #result = wait_for_output(output_path, round_num)
     print("Got result:", result)
@@ -302,7 +303,7 @@ for round_num in range(1, 101):  # or while True
     lat = result['location']['lat']
     lon = result['location']['lon']
     
-    save_results(output_round_data, image_path, round_num, lat, lon, get_coord_truth(driver))  # Save results to CSV
+    save_results(driver,output_round_data, image_path, round_num, lat, lon, get_coord_truth(driver))  # Save results to CSV
     
     round_num+=1
     long_conv = interp1d([long_low,long_up],[-327,327])
@@ -346,6 +347,6 @@ for round_num in range(1, 101):  # or while True
     time.sleep(2)  # Wait until next round loads
     
 print(f"avg error of {sum(process_results(driver,results))/len(results)} meters")
-if os.path.exists('./processed'):
-    shutil.rmtree('./processed')
+if os.path.exists('results/processed'):
+    shutil.rmtree('results/processed')
 driver.close()

@@ -87,7 +87,7 @@ def toggle_elements(driver, selectors=None, ids=None, inside_iframe=False, ifram
         driver.switch_to.default_content()
 
 def capture_map_screenshot(driver, round_num=1):
-    path = f"./screenshots/round_{round_num:03d}.png"
+    path = f"../results/screenshots/round_{round_num:03d}.png"
     driver.save_screenshot(path)
     print(f"Screenshot saved to: {path}")
 
@@ -133,7 +133,7 @@ lat_low = -75.299304
 long_up = 179.235395
 
 round_num = 1
-image_path = Path(f"./screenshots/round_{round_num:02}.png")
+image_path = Path(f"./screenshots/round_{round_num:03}.png")
 
 image_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -164,7 +164,7 @@ for round_num in range(1, 6):  # or while True
     print(f"{YELLOW}Image capture done...{RESET}")
 
     ###################### GAMEPLAY ######################
-    output_path = Path(f"./processed/round_{round_num:02}_output.yaml")
+    output_path = Path(f"./processed/round_{round_num:03}_output.yaml")
 
     result = wait_for_output(output_path, round_num)
     print("Got result:", result)
@@ -208,3 +208,5 @@ for round_num in range(1, 6):  # or while True
 
     print("Done with round", round_num)
     time.sleep(2)  # Wait until next round loads
+    
+driver.quit()
