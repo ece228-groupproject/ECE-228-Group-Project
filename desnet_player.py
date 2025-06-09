@@ -72,12 +72,12 @@ CYAN    = "\033[96m"
 BOLD    = "\033[1m"
 RESET   = "\033[0m"
     
-def save_results(driver,csv_file, img_path, round_num, in_lat, in_lon, truth):
+def save_results(csv_file, img_path, round_num, in_lat, in_lon, truth,dist_error):
     #Write header if file is empty
     if not os.path.exists(csv_file):
         with open(csv_file, 'w', newline='') as file:
             write_header = csv.writer(file)
-            write_header.writerow(['round','image_path','truth_country','truth_lat','truth_long',f"{model.name}_country",f"{model.name}_lat",f"{model.name}_long", f"{model.name}_distance"])
+            write_header.writerow(['round','image_path','truth_country','truth_lat','truth_long',f"{model.name}_country",f"{model.name}_lat",f"{model.name}_long", f"{model.name}_distance (km)"])
             
     #get country from coord
     country = country_coord.getCountry_fromCoord([in_lat, in_lon])
@@ -85,7 +85,7 @@ def save_results(driver,csv_file, img_path, round_num, in_lat, in_lon, truth):
     #append data in csv file
     with open(csv_file, 'a', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow([round_num, img_path, truth_country, truth[0], truth[1], country, in_lat, in_lon,get_dist_text(driver)])
+        writer.writerow([round_num, img_path, truth_country, truth[0], truth[1], country, in_lat, in_lon,dist_error])
     print(f"Results saved to {csv_file}")
 def get_coord_truth(driver):
     try:
@@ -119,6 +119,7 @@ def get_dist_text(driver):
     try:
         element = driver.find_element(By.ID, "distanceText")
         print(f"Distance away from target: {element.text}")
+        #return element.text, value, unit
         return element.text
     except:
         return None
@@ -303,9 +304,6 @@ for round_num in range(1, 101):  # or while True
     lat = result['location']['lat']
     lon = result['location']['lon']
     
-    save_results(driver,output_round_data, image_path, round_num, lat, lon, get_coord_truth(driver))  # Save results to CSV
-    
-    round_num+=1
     long_conv = interp1d([long_low,long_up],[-327,327])
     lat_conv = interp1d([lat_up,lat_low],[-200,200])
     x = long_conv(lon)
@@ -339,14 +337,19 @@ for round_num in range(1, 101):  # or while True
     )
     
     countdown(10)
-    results.append(get_dist_text(driver))
+    
+    dist_text = get_dist_text(driver)
+    results.append(dist_text)
+    save_results(output_round_data, image_path, round_num, lat, lon, get_coord_truth(driver),process_results(driver,[dist_text])[0])  # Save results to CSV
+    round_num+=1
+    
     continue_btn.click()
     print("Clicked Continue button.")
 
     print("Done with round", round_num)
     time.sleep(2)  # Wait until next round loads
     
-print(f"avg error of {sum(process_results(driver,results))/len(results)} meters")
+print(f"avg error of {sum(process_results(driver,results))/len(results)} km")
 if os.path.exists('results/processed'):
     shutil.rmtree('results/processed')
 driver.close()
