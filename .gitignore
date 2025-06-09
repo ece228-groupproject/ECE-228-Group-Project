@@ -1,6 +1,6 @@
 data/compressed_dataset/*
 **/.DS_Store
-model/Trained_Models/CNN/*.pth
+/model/Trained_Models/**/*.pth
 .ipynb_checkpoints
 /ece228wb_venv
 /ece228venv/*

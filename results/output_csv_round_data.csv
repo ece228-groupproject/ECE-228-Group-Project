@@ -1,8 +1,1 @@
 round,image_path,truth_country,truth_lat,truth_long,DenseNet-201-3_country,DenseNet-201-3_lat,DenseNet-201-3_long,DenseNet-201-3_distance (km)
-1,results/screenshots/round_001.png,United States,38.874174101972336,-100.85530852095145,United States,39,-77,12872800.0
-2,results/screenshots/round_002.png,Россия,50.15861035028542,137.3078839432283,United States,39,-77,9499100.0
-3,results/screenshots/round_003.png,Australia,-28.05713998002472,143.50385296019843,United States,39,-77,16199700.0
-4,results/screenshots/round_004.png,México,24.302291723745284,-99.03007477534456,United States,39,-77,2749600.0
-5,results/screenshots/round_005.png,Brasil,-20.57256533897254,-44.85713727765596,United States,39,-77,7409500.0
-6,results/screenshots/round_006.png,Россия,62.196685310690505,116.63317986428179,United States,39,-77,8653800.0
-7,results/screenshots/round_007.png,Canada,47.526565580006526,-68.65460357928026,United States,39,-77,1066800.0
