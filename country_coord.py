@@ -6,6 +6,7 @@ import os
 import country_converter as coco
 import pycountry
 from geopy import distance
+import reverse_geocode
 # country --> iso --> capital --> coord
 # ctry2coord(country_dict, model_output, centroid)
 
@@ -15,15 +16,18 @@ concap=os.path.join("data","kaggle_dataset","concap.csv")
 # -----------------------#
 # Get country from lat and lon coordinates
 def getDist(coord1,coord2):
-    return distance.distance(coord1, coord2).km * 1000
+    return distance.distance(coord1, coord2).km
 
 
 # -----------------------#
 # Get country from lat and lon coordinates
 def getCountry_fromCoord(coord):
-    geolocator = Nominatim(user_agent="my_geopy_app")
-    location = geolocator.reverse(str(coord[0])+","+str(coord[1]))
-    return location.raw["address"].get("country","")
+    # try:
+    #     geolocator = Nominatim(user_agent="bruh")
+    #     location = geolocator.reverse(str(coord[0])+","+str(coord[1]))
+    #     return location.raw["address"].get("country","")
+ 
+    return reverse_geocode.search([tuple(coord)])[0]["country"]
     
 # -----------------------#
 # Get country iso2 code
@@ -47,36 +51,25 @@ def getISO2(ctry):
         
 # -----------------------#
 # lookup using country -> capital (api1 cities)
+ctry2capital_dict = {}
 def ctry2capital(ctry):
     # iso code
     iso2 = getISO2(ctry)
-
-    url = f"https://restcountries.com/v3.1/alpha/{iso2}"
-    response = requests.get(url)
-
-    if response.status_code == 200:
-        data = response.json()
-        if data and data[0].get('capital'):
-            print(f"The capital of {ctry} is: {data[0]['capital'][0]}")
-            return data[0]['capital'][0]
-        else:
-            return "Capital not found"
+    capital = ctry2capital_dict.get(iso2, None)
+    if capital:
+        return capital
+    # get capital
+    url = "https://countriesnow.space/api/v0.1/countries/capital"
+    payload = {"iso2": iso2}
+    headers = {}
+    response = requests.request("POST", url, headers=headers, data=payload)
+    if(response.status_code==429):
+        raise Exception("In ctry2capital: <Response [429]>: Too many requests")
     else:
-        return f"Error: {response.status_code}"
-
-
-    # # get capital
-    # url = #"https://countriesnow.space/api/v0.1/countries/capital"
-    # payload = {"iso2": iso2}
-    # headers = {}
-    # response = requests.request("POST", url, headers=headers, data=payload)
-    # if(response.status_code==429):
-    #     raise Exception("In ctry2capital: <Response [429]>: Too many requests")
-    # else:
-    #     res = dict(json.loads(response.text))
-    #     capital = res["data"]["capital"]
-
-    #     return capital
+        res = dict(json.loads(response.text))
+        capital = res["data"]["capital"]
+        ctry2capital_dict[iso2] = capital
+        return capital
     
 # -------------------- #
 # capital lat lon dictionary with all-capital-cities-in-the-world dataset

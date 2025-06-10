@@ -58,6 +58,13 @@ model.load_state_dict(checkpoint)
 
 model = model.to(device)
 
+available_models = [
+    {"name": "DenseNet-201-3", "folder": "CNN", "checkpoint": "DenseNet-201-3-Best.pth"},
+    {"name": "ResNet-152-1", "folder": "CNN", "checkpoint": "ResNet-152-1-Best.pth"},
+    {"name": "ViT_b_16", "folder": "ViT", "checkpoint": "ViT-b-16-Best.pth"},
+    {"name": "VGG-19BN-1", "folder": "CNN", "checkpoint": "VGG-19BN-1-Best"}
+]
+
 results = []
 if os.path.exists(output_folder):
     shutil.rmtree(output_folder)
@@ -71,6 +78,34 @@ MAGENTA = "\033[95m"
 CYAN    = "\033[96m"
 BOLD    = "\033[1m"
 RESET   = "\033[0m"
+
+def ai_battle(op_model, reference_csv,result_csv):
+    
+    #get csv data
+    with open(reference_csv, 'r',newline='') as file:
+        reader = csv.reader(file)
+        header = next(reader)
+        rows = list(reader)
+        
+    with open(result_csv,'w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(['round','image_path','truth_country','truth_lat','truth_long',f"{model.name}_country",f"{model.name}_lat",f"{model.name}_long", f"{model.name}_distance (km)"])
+        for row in rows:
+            round = row[0]
+            img_path = row[1]
+            truth_country = row[2]
+            truth_lat = float(row[3])
+            truth_long = float(row[4])
+            
+            img = d.transform(tv.io.read_image(img_path))
+            img = img.unsqueeze(0)
+            pred = op_model(img)
+            pred = country_coord.ctry2coord(d.country_dict, pred.argmax(dim=1).item(), centroid=False) #lat, long
+    
+            country = country_coord.getCountry_fromCoord([pred[0], pred[1]])
+            writer.writerow([round, img_path, truth_country, truth_lat, truth_long, country, pred[0], pred[1], country_coord.getDist([pred[0], pred[1]], [truth_lat, truth_long])])
+        
+        
     
 def save_results(csv_file, img_path, round_num, in_lat, in_lon, truth,dist_error):
     #Write header if file is empty
@@ -273,7 +308,7 @@ image_path.parent.mkdir(parents=True, exist_ok=True)
 print(f"{GREEN}\n\n========================\nGAME BEGIN\n========================{RESET}")
          
 # Run for multiple rounds
-for round_num in range(1, 101):  # or while True
+for round_num in range(101, 201):  # or while True
 
     print('\n\n' + '=' * 10 + f' ROUND {round_num} START ' + '=' * 10 + '\n\n')
 
@@ -352,4 +387,47 @@ for round_num in range(1, 101):  # or while True
 print(f"avg error of {sum(process_results(driver,results))/len(results)} km")
 if os.path.exists('results/processed'):
     shutil.rmtree('results/processed')
+    
 driver.close()
+
+for op_model in available_models:
+    print(f"Running AI battle with {op_model['name']}...")
+    if 'DenseNet' in op_model['name']:
+        weights = tv.models.DenseNet201_Weights.DEFAULT
+        transform = v2.Compose([weights.transforms(), ])
+        d = our_datasets.Country_images("data/Data_Generation/country.csv",dataset_path,transform=transform)
+        num_classes = d.get_num_classes()
+        model = tv.models.densenet201(num_classes=num_classes)
+    elif 'ResNet' in op_model['name']:
+        print("ressssss")
+        weights = tv.models.ResNet152_Weights.IMAGENET1K_V2
+        transform = v2.Compose([weights.transforms(), ])
+        d = our_datasets.Country_images("data/Data_Generation/country.csv",dataset_path,transform=transform)
+        num_classes = d.get_num_classes()       
+        model = tv.models.resnet152(num_classes=num_classes)
+    elif 'VGG' in op_model['name']:
+        weights = tv.models.VGG19_BN_Weights.DEFAULT
+        transform = v2.Compose([weights.transforms(), ])
+        d = our_datasets.Country_images("data/Data_Generation/country.csv",dataset_path,transform=transform)
+        num_classes = d.get_num_classes()       
+        model = tv.models.vgg19_bn(num_classes=num_classes)
+    elif 'ViT' in op_model['name']:
+        weights = tv.models.ViT_B_16_Weights.DEFAULT
+        transform = v2.Compose([weights.transforms(), ])
+        d = our_datasets.Country_images("data/Data_Generation/country.csv",dataset_path,transform=transform)
+        num_classes = d.get_num_classes()
+        model = tv.models.vit_b_16(num_classes=num_classes)
+    else:
+        raise ValueError(f"Unknown model name: {op_model['name']}")
+        
+    model.device = device
+    model.name = op_model['name']
+    model.path = os.path.join("model","Trained_Models",op_model['folder'])
+
+    checkpoint = torch.load(os.path.join(model.path,model.name+"-Best.pth"),map_location=torch.device(device))
+    model.load_state_dict(checkpoint)
+    model = model.to(device)
+    
+    ai_battle(model, output_round_data, f"results/{op_model['name']}_output.csv")
+    print(f"Results saved to results/{op_model['name']}_output.csv")
+    
