@@ -6,6 +6,7 @@ import os
 import country_converter as coco
 import pycountry
 from geopy import distance
+import reverse_geocode
 # country --> iso --> capital --> coord
 # ctry2coord(country_dict, model_output, centroid)
 
@@ -21,9 +22,12 @@ def getDist(coord1,coord2):
 # -----------------------#
 # Get country from lat and lon coordinates
 def getCountry_fromCoord(coord):
-    geolocator = Nominatim(user_agent="http")
-    location = geolocator.reverse(str(coord[0])+","+str(coord[1]))
-    return location.raw["address"].get("country","")
+    # try:
+    #     geolocator = Nominatim(user_agent="bruh")
+    #     location = geolocator.reverse(str(coord[0])+","+str(coord[1]))
+    #     return location.raw["address"].get("country","")
+ 
+    return reverse_geocode.search([tuple(coord)])[0]["country"]
     
 # -----------------------#
 # Get country iso2 code

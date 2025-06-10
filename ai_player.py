@@ -61,7 +61,7 @@ model = model.to(device)
 available_models = [
     {"name": "DenseNet-201-3", "folder": "CNN", "checkpoint": "DenseNet-201-3-Best.pth"},
     {"name": "ResNet-152-1", "folder": "CNN", "checkpoint": "ResNet-152-1-Best.pth"},
-    {"name": "ViT-b-16", "folder": "ViT", "checkpoint": "ViT-b-16-Best.pth"},
+    {"name": "ViT_b_16", "folder": "ViT", "checkpoint": "ViT-b-16-Best.pth"},
     {"name": "VGG-19BN-1", "folder": "CNN", "checkpoint": "VGG-19BN-1-Best"}
 ]
 
@@ -308,7 +308,7 @@ image_path.parent.mkdir(parents=True, exist_ok=True)
 print(f"{GREEN}\n\n========================\nGAME BEGIN\n========================{RESET}")
          
 # Run for multiple rounds
-for round_num in range(1, 2):  # or while True
+for round_num in range(101, 201):  # or while True
 
     print('\n\n' + '=' * 10 + f' ROUND {round_num} START ' + '=' * 10 + '\n\n')
 
@@ -394,13 +394,29 @@ for op_model in available_models:
     print(f"Running AI battle with {op_model['name']}...")
     if 'DenseNet' in op_model['name']:
         weights = tv.models.DenseNet201_Weights.DEFAULT
+        transform = v2.Compose([weights.transforms(), ])
+        d = our_datasets.Country_images("data/Data_Generation/country.csv",dataset_path,transform=transform)
+        num_classes = d.get_num_classes()
         model = tv.models.densenet201(num_classes=num_classes)
     elif 'ResNet' in op_model['name']:
-        weights = tv.models.ResNet152_Weights.DEFAULT
+        print("ressssss")
+        weights = tv.models.ResNet152_Weights.IMAGENET1K_V2
+        transform = v2.Compose([weights.transforms(), ])
+        d = our_datasets.Country_images("data/Data_Generation/country.csv",dataset_path,transform=transform)
+        num_classes = d.get_num_classes()       
         model = tv.models.resnet152(num_classes=num_classes)
+    elif 'VGG' in op_model['name']:
+        weights = tv.models.VGG19_BN_Weights.DEFAULT
+        transform = v2.Compose([weights.transforms(), ])
+        d = our_datasets.Country_images("data/Data_Generation/country.csv",dataset_path,transform=transform)
+        num_classes = d.get_num_classes()       
+        model = tv.models.vgg19_bn(num_classes=num_classes)
     elif 'ViT' in op_model['name']:
         weights = tv.models.ViT_B_16_Weights.DEFAULT
-        model = tv.models.vit_b_16(weights=weights)
+        transform = v2.Compose([weights.transforms(), ])
+        d = our_datasets.Country_images("data/Data_Generation/country.csv",dataset_path,transform=transform)
+        num_classes = d.get_num_classes()
+        model = tv.models.vit_b_16(num_classes=num_classes)
     else:
         raise ValueError(f"Unknown model name: {op_model['name']}")
         

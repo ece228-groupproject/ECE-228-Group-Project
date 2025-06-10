@@ -1,1 +1,28 @@
 round,image_path,truth_country,truth_lat,truth_long,DenseNet-201-3_country,DenseNet-201-3_lat,DenseNet-201-3_long,DenseNet-201-3_distance (km)
+74,results/screenshots/round_074.png,Peru,-13.540092672475305,-71.94132170358179,United States,39,-77,5915200.0
+75,results/screenshots/round_075.png,United States,40.413506313724504,-109.85974840723324,United States,39,-77,2884600.0
+76,results/screenshots/round_076.png,United States,37.223966828840325,-77.4015236138013,United States,39,-77,289000.0
+77,results/screenshots/round_077.png,Canada,54.69962802942694,-103.13678132528872,United States,39,-77,2640200.0
+78,results/screenshots/round_078.png,"Korea, Republic of",35.9357760171249,128.14472724283553,United States,39,-77,11273700.0
+79,results/screenshots/round_079.png,Japan,37.99847561862406,140.1913229165913,United States,39,-77,10632200.0
+80,results/screenshots/round_080.png,Colombia,3.4196180761742836,-76.23934769168345,United States,39,-77,4013200.0
+81,results/screenshots/round_081.png,Mexico,19.90561741149972,-103.61126092814058,United States,39,-77,3432000.0
+82,results/screenshots/round_082.png,Russian Federation,59.63907025001453,33.52422787091945,United States,39,-77,7247700.0
+83,results/screenshots/round_083.png,Nigeria,6.727225323164728,4.65307321472724,United States,39,-77,8716200.0
+84,results/screenshots/round_084.png,Russian Federation,45.285310446216954,44.25493109508934,United States,39,-77,8872800.0
+85,results/screenshots/round_085.png,Poland,51.92890133229217,15.515162742688567,United States,39,-77,6746900.0
+86,results/screenshots/round_086.png,Turkey,41.20807110749714,36.97334697357746,United States,39,-77,8762200.0
+87,results/screenshots/round_087.png,United States,56.307779577623286,-133.04452695152415,United States,39,-77,4497000.0
+88,results/screenshots/round_088.png,Belgium,51.31072646034688,4.429630415219093,United States,39,-77,6079400.0
+89,results/screenshots/round_089.png,France,43.17356504571534,5.609956941807079,United States,39,-77,6555600.0
+90,results/screenshots/round_090.png,Argentina,-28.2585330045655,-67.43909288499839,United States,39,-77,7585400.0
+91,results/screenshots/round_091.png,Argentina,-38.27926737059684,-63.00545994023611,United States,39,-77,8747900.0
+92,results/screenshots/round_092.png,Philippines,13.552172257401612,122.35562008755208,United States,39,-77,13821500.0
+93,results/screenshots/round_093.png,Mexico,20.731077748418016,-88.20736898607021,United States,39,-77,2398300.0
+94,results/screenshots/round_094.png,Russian Federation,49.81664288533557,88.95712361134733,United States,39,-77,9976300.0
+95,results/screenshots/round_095.png,South Africa,-24.349946048698037,28.56326687312131,United States,39,-77,12888600.0
+96,results/screenshots/round_096.png,Brazil,-3.5386704071275794,-45.77239830916085,United States,39,-77,5687700.0
+97,results/screenshots/round_097.png,Brazil,-15.75302552402397,-54.7807623887318,United States,39,-77,6521300.0
+98,results/screenshots/round_098.png,Germany,50.682854705943875,10.914954268105799,United States,39,-77,6523400.0
+99,results/screenshots/round_099.png,India,27.307948449305,79.43567627334882,United States,39,-77,12166900.0
+100,results/screenshots/round_100.png,Ukraine,51.668054273522515,26.389428623843585,United States,39,-77,7400800.0

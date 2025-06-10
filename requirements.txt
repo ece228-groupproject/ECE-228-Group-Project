@@ -67,6 +67,7 @@ pytz==2025.2
 PyYAML==6.0.2
 pyzmq==26.4.0
 requests==2.32.3
+reverse_geocode==1.6.6
 scipy==1.15.3
 selenium==4.33.0
 selenium-wire==5.1.0
