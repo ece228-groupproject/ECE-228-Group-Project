@@ -6,7 +6,7 @@ import os
 
 REPORT_FREQUENCY = 100
 
-def TrainModel(model, EPOCHS, loss_fn, train_loader, val_loader, optimizer, lr_scheduler,use_amp = False, scaler = None):
+def TrainModel(model, EPOCHS, loss_fn, train_loader, val_loader, optimizer, lr_scheduler, use_amp = False, scaler = None):
     """
     This function will train your model and save the one that perfroms the best of validation data
     model: the model you wish to test
@@ -16,6 +16,7 @@ def TrainModel(model, EPOCHS, loss_fn, train_loader, val_loader, optimizer, lr_s
     val_loader: the data loader of the Validation dataset
     optimizer: the algorthim to step toward the optimal solution
     lr_scheduler: the lr_scheduler changes the lr dynamically as needed
+    use_amp: Use amp or not, disable if loss is NaN
     scaler: scales the loss dues to our use of mixed precision
     """
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
@@ -87,6 +88,7 @@ def train_one_epoch(model, training_loader, epoch_index, loss_fn, tb_writer, opt
     tb_writer: a summaryWriter used for tracking our training  
     optimizer: the algorthim to step toward the optimal solution  
     lr_scheduler: the lr_scheduler changes the lr dynamically as needed  
+    use_amp: Use amp or not, disable if loss is NaN
     scaler: scales the loss dues to our use of mixed precision  
     """
     running_loss = 0.0
