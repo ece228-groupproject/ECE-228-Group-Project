@@ -1,28 +1,101 @@
 round,image_path,truth_country,truth_lat,truth_long,DenseNet-201-3_country,DenseNet-201-3_lat,DenseNet-201-3_long,DenseNet-201-3_distance (km)
-74,results/screenshots/round_074.png,Peru,-13.540092672475305,-71.94132170358179,United States,39,-77,5915200.0
-75,results/screenshots/round_075.png,United States,40.413506313724504,-109.85974840723324,United States,39,-77,2884600.0
-76,results/screenshots/round_076.png,United States,37.223966828840325,-77.4015236138013,United States,39,-77,289000.0
-77,results/screenshots/round_077.png,Canada,54.69962802942694,-103.13678132528872,United States,39,-77,2640200.0
-78,results/screenshots/round_078.png,"Korea, Republic of",35.9357760171249,128.14472724283553,United States,39,-77,11273700.0
-79,results/screenshots/round_079.png,Japan,37.99847561862406,140.1913229165913,United States,39,-77,10632200.0
-80,results/screenshots/round_080.png,Colombia,3.4196180761742836,-76.23934769168345,United States,39,-77,4013200.0
-81,results/screenshots/round_081.png,Mexico,19.90561741149972,-103.61126092814058,United States,39,-77,3432000.0
-82,results/screenshots/round_082.png,Russian Federation,59.63907025001453,33.52422787091945,United States,39,-77,7247700.0
-83,results/screenshots/round_083.png,Nigeria,6.727225323164728,4.65307321472724,United States,39,-77,8716200.0
-84,results/screenshots/round_084.png,Russian Federation,45.285310446216954,44.25493109508934,United States,39,-77,8872800.0
-85,results/screenshots/round_085.png,Poland,51.92890133229217,15.515162742688567,United States,39,-77,6746900.0
-86,results/screenshots/round_086.png,Turkey,41.20807110749714,36.97334697357746,United States,39,-77,8762200.0
-87,results/screenshots/round_087.png,United States,56.307779577623286,-133.04452695152415,United States,39,-77,4497000.0
-88,results/screenshots/round_088.png,Belgium,51.31072646034688,4.429630415219093,United States,39,-77,6079400.0
-89,results/screenshots/round_089.png,France,43.17356504571534,5.609956941807079,United States,39,-77,6555600.0
-90,results/screenshots/round_090.png,Argentina,-28.2585330045655,-67.43909288499839,United States,39,-77,7585400.0
-91,results/screenshots/round_091.png,Argentina,-38.27926737059684,-63.00545994023611,United States,39,-77,8747900.0
-92,results/screenshots/round_092.png,Philippines,13.552172257401612,122.35562008755208,United States,39,-77,13821500.0
-93,results/screenshots/round_093.png,Mexico,20.731077748418016,-88.20736898607021,United States,39,-77,2398300.0
-94,results/screenshots/round_094.png,Russian Federation,49.81664288533557,88.95712361134733,United States,39,-77,9976300.0
-95,results/screenshots/round_095.png,South Africa,-24.349946048698037,28.56326687312131,United States,39,-77,12888600.0
-96,results/screenshots/round_096.png,Brazil,-3.5386704071275794,-45.77239830916085,United States,39,-77,5687700.0
-97,results/screenshots/round_097.png,Brazil,-15.75302552402397,-54.7807623887318,United States,39,-77,6521300.0
-98,results/screenshots/round_098.png,Germany,50.682854705943875,10.914954268105799,United States,39,-77,6523400.0
-99,results/screenshots/round_099.png,India,27.307948449305,79.43567627334882,United States,39,-77,12166900.0
-100,results/screenshots/round_100.png,Ukraine,51.668054273522515,26.389428623843585,United States,39,-77,7400800.0
+1,results/screenshots/round_001.png,United States,35.39851981582296,-97.28147085767543,United States,39,-77,5910000.0
+2,results/screenshots/round_002.png,United States,38.93670790238748,-111.06619548246533,United States,39,-77,2957100.0
+3,results/screenshots/round_003.png,United States,37.679079703403026,-89.73564475042487,United States,39,-77,1170200.0
+4,results/screenshots/round_004.png,Australia,-33.56440286348825,134.88730983144953,United States,39,-77,17149100.0
+5,results/screenshots/round_005.png,United States,34.25187482043674,-110.05942647255235,United States,39,-77,3024500.0
+6,results/screenshots/round_006.png,Poland,49.83318719541787,19.035271806009796,United States,39,-77,7102800.0
+7,results/screenshots/round_007.png,United States,43.64159717274018,-70.24101464297985,United States,39,-77,679300.0
+8,results/screenshots/round_008.png,India,11.515923881567238,79.3215509483326,United States,39,-77,13796300.0
+9,results/screenshots/round_009.png,Russian Federation,57.0009520405061,34.7612260935859,United States,39,-77,7498000.0
+10,results/screenshots/round_010.png,Indonesia,-0.32279840377383984,103.16552724397924,United States,39,-77,15636800.0
+11,results/screenshots/round_011.png,Spain,40.07792468928248,-2.800881630963741,United States,39,-77,6092400.0
+12,results/screenshots/round_012.png,Canada,57.93895120506013,-130.04548730407765,United States,39,-77,4267400.0
+13,results/screenshots/round_013.png,Spain,40.90369382596664,-2.5505000682986356,United States,39,-77,6072600.0
+14,results/screenshots/round_014.png,Philippines,15.762589562261365,119.9090623335509,United States,39,-77,13618200.0
+15,results/screenshots/round_015.png,Spain,41.956626222875,2.5191481596891556,United States,39,-77,6402700.0
+16,results/screenshots/round_016.png,United States,34.741003845496884,-82.25080625384577,United States,39,-77,751500.0
+17,results/screenshots/round_017.png,Israel,31.936483795874093,34.79540806639871,United States,39,-77,9364100.0
+18,results/screenshots/round_018.png,Turkey,38.628278927922224,34.71667679352397,United States,39,-77,8846100.0
+19,results/screenshots/round_019.png,Nigeria,11.328285488750678,9.801528108758507,United States,39,-77,8891600.0
+20,results/screenshots/round_020.png,Colombia,8.725954002908416,-75.89478821734515,United States,39,-77,3444200.0
+21,results/screenshots/round_021.png,Brazil,-16.278681674644734,-44.60705431765449,United States,39,-77,7005300.0
+22,results/screenshots/round_022.png,India,25.553744115990945,82.25374848645056,United States,39,-77,12432100.0
+23,results/screenshots/round_023.png,United States,28.824675008850804,-97.14803280387926,United States,39,-77,2242100.0
+24,results/screenshots/round_024.png,Argentina,-35.493218282361575,-58.85688906479415,United States,39,-77,8553900.0
+25,results/screenshots/round_025.png,Cambodia,13.105888568484042,104.47197255502994,United States,39,-77,14142900.0
+26,results/screenshots/round_026.png,Peru,-5.175092964006389,-81.07429809593918,United States,39,-77,4985200.0
+27,results/screenshots/round_027.png,Thailand,14.914770249818803,101.05839849519685,United States,39,-77,13937300.0
+28,results/screenshots/round_028.png,India,23.081508123905046,70.12631230260635,United States,39,-77,12222200.0
+29,results/screenshots/round_029.png,South Africa,-22.52622771803202,30.403496553267072,United States,39,-77,12990100.0
+30,results/screenshots/round_030.png,Philippines,13.885290700737007,123.08970208192538,United States,39,-77,13721500.0
+31,results/screenshots/round_031.png,New Zealand,-37.743482449056486,176.35866742486505,United States,39,-77,13890600.0
+32,results/screenshots/round_032.png,Canada,50.99270246092957,-97.2964340580966,United States,39,-77,2042600.0
+33,results/screenshots/round_033.png,Brazil,-8.564200308580968,-40.42710630178436,United States,39,-77,6524000.0
+34,results/screenshots/round_034.png,Turkey,38.42257720872485,34.268406034752545,United States,39,-77,8833200.0
+35,results/screenshots/round_035.png,South Africa,-31.462767324954157,26.43341477373696,United States,39,-77,13198400.0
+36,results/screenshots/round_036.png,United States,37.45687745945017,-80.52655833205516,United States,39,-77,440300.0
+37,results/screenshots/round_037.png,Australia,-23.735723378392763,149.91996202983026,United States,39,-77,15341100.0
+38,results/screenshots/round_038.png,Brazil,-0.9157019677265388,-48.17847330326749,United States,39,-77,5335600.0
+39,results/screenshots/round_039.png,India,24.610634334171014,84.12688983221254,United States,39,-77,12587000.0
+40,results/screenshots/round_040.png,United States,41.780382089070216,-85.17501182886778,United States,39,-77,767100.0
+41,results/screenshots/round_041.png,Russian Federation,51.67352132741706,102.23466592386153,United States,39,-77,9854500.0
+42,results/screenshots/round_042.png,Spain,40.41848475808547,-3.649666633386311,United States,39,-77,6011100.0
+43,results/screenshots/round_043.png,United States,35.10749019555279,-104.02001382317172,United States,39,-77,2474400.0
+44,results/screenshots/round_044.png,Canada,52.7837349718753,-113.60777337465512,United States,39,-77,3156700.0
+45,results/screenshots/round_045.png,Canada,60.092712094120515,-130.700692541804,United States,39,-77,4327800.0
+46,results/screenshots/round_046.png,India,29.209242227696688,75.12171626484957,United States,39,-77,11824000.0
+47,results/screenshots/round_047.png,Chile,-35.248979226584616,-71.82438009535208,United States,39,-77,8347299.999999999
+48,results/screenshots/round_048.png,Mexico,24.799928589375398,-107.38138133573078,United States,39,-77,3319500.0
+49,results/screenshots/round_049.png,India,18.65004556682779,74.0573109298435,United States,39,-77,12843400.0
+50,results/screenshots/round_050.png,Japan,42.32133523022475,140.9958860273654,United States,39,-77,10143800.0
+51,results/screenshots/round_051.png,Italy,44.36213718653044,11.717410698254906,United States,39,-77,6928500.0
+52,results/screenshots/round_052.png,Oman,22.346945824083534,58.453050479269606,United States,39,-77,11682400.0
+53,results/screenshots/round_053.png,Turkey,37.063917865874295,32.73510799874137,United States,39,-77,8836400.0
+54,results/screenshots/round_054.png,Panama,8.887669496063433,-79.77911997214834,United States,39,-77,3441300.0
+55,results/screenshots/round_055.png,Argentina,-31.35023365822522,-64.33998021094511,United States,39,-77,7998900.0
+56,results/screenshots/round_056.png,Romania,46.00348640862808,26.13005534092736,United States,39,-77,7778100.0
+57,results/screenshots/round_057.png,Germany,52.32686523219851,12.40628456630348,United States,39,-77,6563700.0
+58,results/screenshots/round_058.png,United States,32.2500768239588,-101.48227616822943,United States,39,-77,2386900.0
+59,results/screenshots/round_059.png,Germany,53.570358549043476,13.275769686005653,United States,39,-77,6555100.0
+60,results/screenshots/round_060.png,Germany,51.75841444336215,11.460291750315378,United States,39,-77,6533300.0
+61,results/screenshots/round_061.png,United Kingdom,51.401971401010854,0.17319002035311468,United States,39,-77,5824800.0
+62,results/screenshots/round_062.png,Indonesia,-7.8690341632495535,112.52190289120803,United States,39,-77,16364000.0
+63,results/screenshots/round_063.png,United States,37.98340249528654,-122.03179766440206,United States,39,-77,3906300.0
+64,results/screenshots/round_064.png,Turkey,38.66625325950452,40.49766194198961,United States,39,-77,9199900.0
+65,results/screenshots/round_065.png,United States,36.98566525415514,-91.58749884289466,United States,39,-77,1349000.0
+66,results/screenshots/round_066.png,Russian Federation,52.730387059989354,50.49218313999989,United States,39,-77,8542100.0
+67,results/screenshots/round_067.png,Nigeria,7.593200140008537,4.197172154304185,United States,39,-77,8673800.0
+68,results/screenshots/round_068.png,Turkey,39.645075796392966,30.794708408110594,United States,39,-77,8519300.0
+69,results/screenshots/round_069.png,Canada,56.08098321472165,-110.88366167188326,United States,39,-77,3094700.0
+70,results/screenshots/round_070.png,Australia,-32.24374988711672,148.60703875272935,United States,39,-77,15917100.0
+71,results/screenshots/round_071.png,Brazil,-8.821715062858384,-35.189567754104644,United States,39,-77,6824200.0
+72,results/screenshots/round_072.png,Sri Lanka,7.573936927216744,79.79225516536256,United States,39,-77,14220500.0
+73,results/screenshots/round_073.png,United States,40.558195195177966,-94.44918915764862,United States,39,-77,1527300.0
+74,results/screenshots/round_074.png,Uruguay,-33.596075821383074,-57.699116153186395,United States,39,-77,8375799.999999999
+75,results/screenshots/round_075.png,Russian Federation,61.81457648307497,50.72656940452496,United States,39,-77,7775900.0
+76,results/screenshots/round_076.png,Japan,34.564234022761084,135.7083654319386,United States,39,-77,11161000.0
+77,results/screenshots/round_077.png,United States,37.80105649950336,-83.91078055597794,United States,39,-77,676900.0
+78,results/screenshots/round_078.png,United States,36.367571722527906,-89.79150734727283,United States,39,-77,1221000.0
+79,results/screenshots/round_079.png,Kenya,-1.0820681480453889,37.84296716442977,United States,39,-77,12143700.0
+80,results/screenshots/round_080.png,Mexico,18.64531394383846,-99.55651104812634,United States,39,-77,3220000.0
+81,results/screenshots/round_081.png,Japan,35.40186149337619,139.31579050605907,United States,39,-77,10934500.0
+82,results/screenshots/round_082.png,United States,36.140570277455886,-102.81441358746098,United States,39,-77,2334100.0
+83,results/screenshots/round_083.png,United States,41.55679493227574,-88.0983164494917,United States,39,-77,1000400.0
+84,results/screenshots/round_084.png,Argentina,-34.28737312010033,-64.38408722903426,United States,39,-77,8320100.0
+85,results/screenshots/round_085.png,United States,41.47256747206521,-123.5086769833005,United States,39,-77,3926200.0
+86,results/screenshots/round_086.png,Mexico,25.652297176927306,-102.76898354299064,United States,39,-77,2911600.0
+87,results/screenshots/round_087.png,Turkey,40.99267798003765,35.022691403408,United States,39,-77,8685600.0
+88,results/screenshots/round_088.png,United States,41.2856075593668,-72.67975082705709,United States,39,-77,367500.0
+89,results/screenshots/round_089.png,Brazil,-21.417781711693795,-50.08373434348989,United States,39,-77,7327700.0
+90,results/screenshots/round_090.png,Indonesia,-2.490165855707443,112.7598130365946,United States,39,-77,15773800.0
+91,results/screenshots/round_091.png,Romania,45.97373960733013,21.60027228880834,United States,39,-77,7494200.0
+92,results/screenshots/round_092.png,Russian Federation,54.045831879168205,81.25964734561451,United States,39,-77,9376400.0
+93,results/screenshots/round_093.png,Russian Federation,66.11809402634873,68.70232180203918,United States,39,-77,7876700.0
+94,results/screenshots/round_094.png,United States,40.791254088120965,-83.83409216106406,United States,39,-77,634900.0
+95,results/screenshots/round_095.png,Latvia,57.16857780474918,21.523550385708482,United States,39,-77,6828500.0
+96,results/screenshots/round_096.png,Tunisia,35.36800801650804,10.834467727448432,United States,39,-77,7379800.0
+97,results/screenshots/round_097.png,Colombia,10.75350334590251,-74.75876125455514,United States,39,-77,3222800.0
+98,results/screenshots/round_098.png,United States,27.867521485757567,-82.3322707287531,United States,39,-77,1420900.0
+99,results/screenshots/round_099.png,Mexico,30.848296677076856,-108.37687103998147,United States,39,-77,3038500.0
+100,results/screenshots/round_100.png,South Africa,-30.124826971593567,22.586816562347536,United States,39,-77,12808100.0

@@ -17,7 +17,7 @@ import shutil
 from PIL import Image
 from pathlib import Path
 import yaml 
-import time
+import sys
 import undetected_chromedriver as uc
 from selenium.webdriver.common.action_chains import ActionChains
 
@@ -66,8 +66,6 @@ available_models = [
 ]
 
 results = []
-if os.path.exists(output_folder):
-    shutil.rmtree(output_folder)
 os.makedirs(output_folder, exist_ok=True)
 
 RED     = "\033[91m"
@@ -270,7 +268,11 @@ def countdown(t_length):
         time.sleep(1)
     print("\rTime till next round: 0   ")
 
-service = Service(executable_path="web_browser/chromedriver")
+if sys.platform.startswith('win'):
+    service = Service(executable_path="web_browser\chromedriver.exe")
+else:
+    service = Service(executable_path="web_browser/chromedriver")  
+
 driver = webdriver.Chrome(service=service)
 driver.get("https://openguessr.com/")
 wait = WebDriverWait(driver, 15)
@@ -308,7 +310,7 @@ image_path.parent.mkdir(parents=True, exist_ok=True)
 print(f"{GREEN}\n\n========================\nGAME BEGIN\n========================{RESET}")
          
 # Run for multiple rounds
-for round_num in range(101, 201):  # or while True
+for round_num in range(1, 101):  # or while True
 
     print('\n\n' + '=' * 10 + f' ROUND {round_num} START ' + '=' * 10 + '\n\n')
 
